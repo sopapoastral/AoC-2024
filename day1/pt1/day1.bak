@@ -1,0 +1,102 @@
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#define num_sz 10
+
+size_t filesz(FILE* fp)
+{
+	size_t lines = 0;
+	char current;
+
+	while((current = fgetc(fp)) != EOF)
+	{
+		if(current == '\n')
+			lines++;
+	}
+
+	return lines;
+}
+
+int parsearInt(char input[num_sz])
+{
+	int output = 0;
+
+	for(int i = num_sz - 1; i >= 0; i--)
+	{
+		if(input[i] != '\0')
+		{
+			output = output * 10 + (input[i] - '0');
+			input[i] = '\0';
+		}
+	}
+
+    fprintf(stdout, "hola\n");
+
+	return output;
+}
+
+void populateArrays(int* arr1, int* arr2, size_t arr_sz, FILE* fp)
+{
+	char current;
+	char num[num_sz];
+	int line = 0;
+	int idx = 0;
+	int res = 0;
+
+	printf("hola\n");
+
+	for(int i = 0; i < num_sz; i++)
+	{
+		num[i] = '\0';
+	}
+
+	while((current = fgetc(fp)) != EOF)
+	{
+		switch(current)
+		{
+		case '\n':
+			res = parsearInt(num);
+			arr2[line] = res;
+			line++;
+			res = 0;
+			idx = 0;
+			break;
+
+		case ' ':
+			current = fgetc(fp);
+			current = fgetc(fp);
+			res = parsearInt(num);
+			arr1[line] = res;
+			res = 0;
+			idx = 0;
+			break;
+
+		default:
+			if(idx < num_sz - 1)
+			{
+				num[idx++] = current;
+			}
+			break;
+		}
+	}
+
+	return;
+}
+
+int main(int argc, char* argv[])
+{
+	FILE* finput;
+	finput = fopen("./input.txt", "r");
+
+	size_t arr_sz = filesz(finput);
+	int arr1[arr_sz];
+	int arr2[arr_sz];
+
+	populateArrays(arr1, arr2, arr_sz, finput);
+
+	printf("Array 1 elem1: %d\nArray 2 elem1: %d\n", arr1[0], arr2[0]);
+
+	fclose(finput);
+	return 0;
+}
