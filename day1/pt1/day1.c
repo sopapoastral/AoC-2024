@@ -37,7 +37,7 @@ Node* createNode(int data)
 	return newNode;
 }
 
-void append(intList* list, int data)
+void prepend(intList* list, int data)
 {
 	Node* newNode = createNode(data);
 
@@ -209,8 +209,8 @@ int main(int argc, char* argv[])
 			list2[arr2[i]] = (intList*)malloc(sizeof(intList));
 			initList(list2[arr2[i]]);
 		}
-		append(list1[arr1[i]], i);
-		append(list2[arr2[i]], i);
+		prepend(list1[arr1[i]], i);
+		prepend(list2[arr2[i]], i);
 	}
 
 	int res = 0;
